@@ -1,12 +1,13 @@
 "use client";
+
 import Link from 'next/link';
-import Image from 'next/image';
 import { TbHome, TbInfoSquare, TbUsersGroup, TbMessage, TbUser, TbSettings, TbGoGame } from 'react-icons/tb';
 import { IoIosArrowDown } from "react-icons/io";
-import { IoMenu, IoClose } from "react-icons/io5"; 
-import React, { useState } from 'react';
-import LoginModal from './LoginModal';  
-import SignUpModal from './SignUpModal';  
+import { IoMenu, IoClose } from "react-icons/io5";
+import { useState } from 'react';
+import LoginModal from './LoginModal';
+import SignUpModal from './SignUpModal';
+import { useUser } from './UserContext';
 
 interface NavLink {
   href: string;
@@ -17,8 +18,8 @@ interface NavLink {
 const Navbar: React.FC = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isSignUpOpen, setSignUpOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);  // True if logged in
-  const [menuOpen, setMenuOpen] = useState(false);  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { loggedIn, logout, login } = useUser();
 
   const navLinks: NavLink[] = [
     { href: '/', label: 'Home', icon: <TbHome size={20} /> },
@@ -50,13 +51,12 @@ const Navbar: React.FC = () => {
     setLoginOpen(true);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const handleLogin = () => {
+    login();
+    closeLogin();
   };
 
-  const logout = () => {
-    setLoggedIn(false);
-  };
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <>
@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
                   <IoIosArrowDown size={20} />
                 </button>
                 <button onClick={logout} className="bg-red-500 flex items-center justify-between text-white px-4 py-2 rounded hover:bg-red-600">
-                   Logout
+                  Logout
                 </button>
               </div>
             ) : (
@@ -117,36 +117,32 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="lg:hidden">
-            {/* Profile on Top for Mobile */}
-            {loggedIn && (
-              <div className="flex flex-col items-center space-y-4 mb-4">
-                <img src="./images/iyehah.png" alt="" className="w-16 rounded-full border-2 border-blue-500" />
-                <p className="font-semibold text-gray-800">Iyehah Hacen</p>
-                <p className="text-gray-500 text-sm">@iyehah</p>
-              </div>
-            )}
-            
-            <ul className="flex flex-col space-y-4 text-gray-600">
+          <div className="lg:hidden bg-white shadow-md mt-2">
+            <ul className="flex flex-col space-y-2 p-4 text-gray-600">
               {(loggedIn ? navLinksLogin : navLinks).map(({ href, label, icon }) => (
                 <li key={href}>
-                  <Link href={href} className="hover:bg-blue-50 p-2 rounded-md hover:text-blue-500 flex items-center justify-center">
+                  <Link href={href} className="flex items-center hover:bg-blue-50 p-2 rounded-md hover:text-blue-500">
                     <span className="mr-1">{icon}</span> {label}
                   </Link>
                 </li>
               ))}
+              {loggedIn ? (
+                <li>
+                  <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Logout
+                  </button>
+                </li>
+              ) : (
+                <div className="flex flex-col space-y-2">
+                  <button onClick={openLogin} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Login
+                  </button>
+                  <button onClick={openSignUp} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </ul>
-
-            {!loggedIn && (
-              <div className="flex flex-col items-center mt-4 space-y-2">
-                <button onClick={openLogin} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
-                  Login
-                </button>
-                <button onClick={openSignUp} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
-                  Sign Up
-                </button>
-              </div>
-            )}
           </div>
         )}
       </nav>
@@ -156,7 +152,7 @@ const Navbar: React.FC = () => {
         isOpen={isLoginOpen} 
         onClose={closeLogin} 
         onSwitchToSignUp={switchToSignUp} 
-        onLogin={() => setLoggedIn(true)}  // Pass login callback 
+        onLogin={handleLogin}
       />
       <SignUpModal 
         isOpen={isSignUpOpen} 
