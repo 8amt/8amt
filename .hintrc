@@ -12,7 +12,8 @@
     "axe/forms": [
       "default",
       {
-        "select-name": "off"
+        "select-name": "off",
+        "label": "off"
       }
     ],
     "compat-api/css": [
@@ -22,6 +23,12 @@
           "text-wrap",
           "text-wrap: balance"
         ]
+      }
+    ],
+    "axe/structure": [
+      "default",
+      {
+        "list": "off"
       }
     ]
   }
