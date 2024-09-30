@@ -1,26 +1,29 @@
-import { useState } from 'react'; 
-import { mockUsers, Friend } from '@/mockUsers';
+import { useState } from "react";
+import { mockUsers, Friend } from "@/mockUsers";
 import { TbStar } from "react-icons/tb";
 
 const FavoriteFriends = () => {
-  const [searchTerm, setSearchTerm] = useState<string>(''); // Initialize search term
-  const [friends, setFriends] = useState<Friend[]>(mockUsers.filter(friend => friend.friend)); // Load only true friends initially
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Initialize search term
+  const [friends, setFriends] = useState<Friend[]>(
+    mockUsers.filter((friend) => friend.friend)
+  ); // Load only true friends initially
   const [isEditing, setIsEditing] = useState<boolean>(false); // State to toggle edit mode
   const [selectedFriends, setSelectedFriends] = useState<number[]>([]); // Store selected friend IDs
 
   // Filter friends based on search term
-  const filteredFriends = friends.filter((friend) =>
-    friend.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    friend.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFriends = friends.filter(
+    (friend) =>
+      friend.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      friend.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Handle updating the selected friends
   const handleFriendSelect = (friendId: number) => {
     if (selectedFriends.includes(friendId)) {
-      setSelectedFriends(prev => prev.filter(id => id !== friendId)); // Deselect if already selected
+      setSelectedFriends((prev) => prev.filter((id) => id !== friendId)); // Deselect if already selected
     } else {
       if (selectedFriends.length < 10) {
-        setSelectedFriends(prev => [...prev, friendId]); // Select the friend
+        setSelectedFriends((prev) => [...prev, friendId]); // Select the friend
       } else {
         alert("You can only pin a maximum of 10 friends.");
       }
@@ -29,9 +32,9 @@ const FavoriteFriends = () => {
 
   // Handle saving the selected friends to the favorite list and closing the edit mode
   const handleUpdate = () => {
-    const updatedFriends = selectedFriends.map((id) => 
-      mockUsers.find((friend) => friend.id === id)
-    ).filter(Boolean) as Friend[];
+    const updatedFriends = selectedFriends
+      .map((id) => mockUsers.find((friend) => friend.id === id))
+      .filter(Boolean) as Friend[];
 
     // Update the state of friends
     setFriends(updatedFriends);
@@ -39,9 +42,9 @@ const FavoriteFriends = () => {
   };
 
   return (
-    <div className='w-full max-w-md mx-auto mb-4'>
+    <div className="w-full max-w-md mx-auto mb-4">
       {/* Display favorite friends */}
-      <div className='flex flex-row items-center justify-between p-2 rounded'>
+      <div className="flex flex-row items-center justify-between p-2 rounded">
         <h3 className="text-xl font-semibold ">Favorite Friends</h3>
 
         {/* Edit Button */}
@@ -49,7 +52,7 @@ const FavoriteFriends = () => {
           onClick={() => setIsEditing(true)}
           className="bg-blue-500 text-white p-2 rounded"
         >
-          <TbStar/>
+          <TbStar />
         </button>
       </div>
       <ul className="list-none p-0 bg-white shadow-md rounded">
@@ -61,7 +64,9 @@ const FavoriteFriends = () => {
                 alt={friend.username}
                 className="w-8 h-8 rounded-full inline-block mr-2"
               />
-              <span>{friend.name} (@{friend.username})</span>
+              <span>
+                {friend.name} (@{friend.username})
+              </span>
             </li>
           ))
         ) : (
@@ -72,7 +77,7 @@ const FavoriteFriends = () => {
       {/* Modal (Edit Mode) */}
       {isEditing && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-md shadow-lg max-w-lg w-full">
+          <div className="bg-white p-6 rounded-md shadow-lg w-3/4 md:w-1/2 lg:w-1/3">
             <h4 className="mb-4">Select Friends to Add</h4>
             <input
               type="text"
@@ -106,17 +111,16 @@ const FavoriteFriends = () => {
                 ))}
             </ul>
 
-            <div className="flex justify-end mt-4">
-              
+            <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={() => setIsEditing(false)}
-                className="bg-gray-300 text-white mr-2 p-2 rounded"
+                className="bg-gray-300 text-white p-2 rounded"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdate}
-                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                className="bg-blue-500 text-white px-4 py-2 rounded "
               >
                 Update
               </button>
