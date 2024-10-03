@@ -17,8 +17,10 @@ const RoomPage = () => {
 
   const [players] = useState<Friend[]>(mockUsers);  // Use mock users
 
-  // Timer and turn management
+  // Timer and turn management, starts only if a player is selected
   useEffect(() => {
+    if (!playerSelected) return;  // Don't start the timer until a player is selected
+
     const interval = setInterval(() => {
       if (turn === 'rival') {
         setRivalTimer(prev => {
@@ -35,12 +37,12 @@ const RoomPage = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [turn]);
+  }, [turn, playerSelected]);
 
   // Handle player selection and switch to game view
   const handlePlayerSelect = (player: Friend) => {
     setSelectedPlayer(player);
-    setPlayerSelected(true);
+    setPlayerSelected(true);  // This will trigger the timer in useEffect
   };
 
   return (
@@ -66,8 +68,7 @@ const RoomPage = () => {
             showTimer={turn === 'rival'}
           />
 
-          
-            <GameGrid game={game} />
+          <GameGrid game={game} />
 
           {/* You (Player 2) */}
           <Players
