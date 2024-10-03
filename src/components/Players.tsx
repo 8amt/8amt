@@ -7,11 +7,12 @@ interface PlayersProps {
   position: "start" | "end";
   timer: number;
   showTimer: boolean; // New prop to control timer visibility
+  bgColor:string;
 }
 
-const Players: React.FC<PlayersProps> = ({ playerName, playerUsername, position, playerImage, timer, showTimer }) => {
+const Players: React.FC<PlayersProps> = ({ playerName, playerUsername, position, playerImage, timer, showTimer ,bgColor}) => {
   return (
-    <div className={`flex flex-col items-center justify-${position} rounded bg-blue-200 p-2 w-full sm:w-auto`}>
+    <div className={`flex flex-col items-center justify-${position} rounded ${bgColor} p-2 w-full sm:w-auto`}>
       <div className="relative flex items-center space-x-2 bg-white rounded p-3 w-full sm:w-52">
         <img src={playerImage} alt={playerName} className="w-12 h-12 rounded-full" />
         <div className="flex flex-col">
