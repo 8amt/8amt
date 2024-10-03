@@ -66,6 +66,7 @@ const RoomPage = () => {
             position="start"
             timer={rivalTimer}
             showTimer={turn === 'rival'}
+            bgColor="bg-red-300"
           />
 
           <GameGrid game={game} />
@@ -78,6 +79,7 @@ const RoomPage = () => {
             position="end"
             timer={yourTimer}
             showTimer={turn === 'you'}
+            bgColor="bg-green-300"
           />
         </div>
       ) : null}
