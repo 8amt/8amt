@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface ProfileInfoProps {
   fullName: string;
   email: string;
-  state: string;
+  state: string; 
 }
 
 const ProfileCard: React.FC<ProfileInfoProps> = ({ fullName, email, state }) => {

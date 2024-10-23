@@ -158,7 +158,7 @@ const Navbar: React.FC = () => {
       {isProfileCardOpen && (
           <ProfileCard 
             fullName="Iyehah Hacen" 
-            email="iyehah@gmail.com" 
+            email='iyehah@gmail.com' 
             state="Tagant"
           />
       )}
