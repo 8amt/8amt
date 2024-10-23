@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { TbHome, TbInfoSquare, TbUsersGroup, TbMessage, TbUser, TbSettings, TbGoGame } from 'react-icons/tb';
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { IoMenu, IoClose } from "react-icons/io5";
 import { useState } from 'react';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 import { useUser } from './UserContext';
+import ProfileCard from './ProfileCard';
 
 interface NavLink {
   href: string;
@@ -19,6 +20,7 @@ const Navbar: React.FC = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isSignUpOpen, setSignUpOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isProfileCardOpen, setProfileCardOpen] = useState(false); // For toggling profile card
   const { loggedIn, logout, login } = useUser();
 
   const navLinks: NavLink[] = [
@@ -58,6 +60,8 @@ const Navbar: React.FC = () => {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
+  const toggleProfileCard = () => setProfileCardOpen(!isProfileCardOpen); // Toggle profile card visibility
+
   return (
     <>
       <nav className="bg-white shadow-lg p-4">
@@ -95,8 +99,11 @@ const Navbar: React.FC = () => {
                   <p className="font-semibold text-gray-800">Iyehah Hacen</p>
                   <p className="text-gray-500 text-sm">@iyehah</p>
                 </div>
-                <button className="flex items-center justify-center text-black p-2 rounded hover:bg-blue-50">
-                  <IoIosArrowDown size={20} />
+                <button 
+                  className="flex items-center justify-center text-black p-2 rounded hover:bg-blue-50" 
+                  onClick={toggleProfileCard}
+                >
+                  {isProfileCardOpen ? <IoIosArrowUp size={20} /> : <IoIosArrowDown size={20} />}
                 </button>
                 <button onClick={logout} className="bg-red-500 flex items-center justify-between text-white px-4 py-2 rounded hover:bg-red-600">
                   Logout
@@ -146,6 +153,15 @@ const Navbar: React.FC = () => {
           </div>
         )}
       </nav>
+
+      {/* Render the Profile Card when arrow is clicked */}
+      {isProfileCardOpen && (
+          <ProfileCard 
+            fullName="Iyehah Hacen" 
+            email='iyehah@gmail.com' 
+            state="Tagant"
+          />
+      )}
 
       {/* Render the Login and Sign Up Modals */}
       <LoginModal 
