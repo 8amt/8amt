@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "development"
-  ],
+  "extends": ["development"],
   "hints": {
     "axe/name-role-value": [
       "default",
@@ -19,10 +17,7 @@
     "compat-api/css": [
       "default",
       {
-        "ignore": [
-          "text-wrap",
-          "text-wrap: balance"
-        ]
+        "ignore": ["text-wrap", "text-wrap: balance"]
       }
     ],
     "axe/structure": [
@@ -34,10 +29,7 @@
     "compat-api/css": [
       "default",
       {
-        "ignore": [
-          "text-wrap",
-          "text-wrap: balance"
-        ]
+        "ignore": ["text-wrap", "text-wrap: balance"]
       }
     ]
   }
